@@ -1,10 +1,14 @@
 import Telebirr from "..";
-import { IH5StringA, IH5Ussid, IRequestBody, IStringA, ITransaction } from "../types";
+import { IH5StringA, IH5Ussid, IH5webResponse, IRequestBody, IStringA, ITransaction } from "../types";
+import axios, { Method } from "axios"
+
 
 export default class H5WebPayment extends Telebirr {
-    protected url: string = "/toTradeWebPay";
-    private requestMode: string = "POST";
+    protected endpoint: string = "/toTradeWebPay";
+    private requestMode: Method = "POST";
     private returnUrl: string;
+
+    private telebirr: Telebirr;
 
     // froms
     private transaction: ITransaction | undefined;
@@ -14,6 +18,7 @@ export default class H5WebPayment extends Telebirr {
     constructor(telebirr: Telebirr, returnUrl: string) {
         super(telebirr.client, telebirr.requestReq, telebirr.receiver);
         this.returnUrl = returnUrl
+        this.telebirr = telebirr;
     }
 
     public addTransaction(transaction: ITransaction) {
@@ -27,11 +32,22 @@ export default class H5WebPayment extends Telebirr {
             sign: encryptedSigh,
             appid: this.client.appid,
         }
-
-        console.log("[+] requestBody: ", this.requestBody);
-
     }
 
+    public async sendRequest(): Promise<IH5webResponse | void> {
+
+        try {
+            const iH5webResponse: IH5webResponse = await this.telebirr.sendRequest({
+                data: (this.requestBody as IRequestBody),
+                endpoint: this.endpoint,
+                requestMode: this.requestMode,
+            }) as IH5webResponse;
+
+            return iH5webResponse;
+        } catch (error) {
+            throw error;
+        }
+    }
 
     private makeSigh(): string {
 

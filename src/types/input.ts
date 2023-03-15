@@ -1,3 +1,6 @@
+import { IRequestBody } from ".";
+import { Method } from "axios"
+
 /**
  * @param notifyUrl Indicates the end point URL from third party which will be used by telebirr platform to respond the Payment result
  * @param timeoutExpress Indicates the payment Order request timeout from third party which indicates the time for payment process to be ended. After this time the payment will not be processed and third party system can reinitiate again,the parameter value unit is Minutes
@@ -27,3 +30,10 @@ export type TTelebirrConstructor = {
     receiveName: string;
     shortCode: string;
 }
+
+export type TBaseSendRequest = {
+    data: IRequestBody;
+    endpoint: string;
+    requestMode: Method
+}
+

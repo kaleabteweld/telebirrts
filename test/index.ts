@@ -4,7 +4,7 @@ import H5WebPayment from "../src/paymentMethods/H5WebPayment";
 const telebirr: Telebirr = Telebirr.fromOneValue({
     appid: "123456",
     appkey: "123456",
-    baseUrl: "https://api.telebirr.com",
+    baseUrl: "http://127.0.0.1/",
     publicKey: "123456",
     notifyUrl: "https://www.baidu.com",
     timeoutExpress: "123456",
@@ -19,3 +19,13 @@ webPayment.addTransaction({
     subject: "123456",
     totalAmount: "123456",
 })
+
+async function pay() {
+    try {
+        const res = await webPayment.sendRequest();
+        console.log("res: ", res);
+    } catch (error) {
+        console.log(error)
+    }
+}
+pay();

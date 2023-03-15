@@ -1,6 +1,9 @@
-import { Iclient, IReceiver, IRequestReq } from "./types";
-import { TRequestReqInput, TTelebirrConstructor } from "./types/input";
+import { Iclient, IReceiver, IRequestReq, IResponse } from "./types";
+import { TBaseSendRequest, TRequestReqInput, TTelebirrConstructor } from "./types/input";
 import crypto from "crypto"
+import axios, { AxiosRequestConfig, isAxiosError } from "axios";
+import { checkIfSuccess } from "./utils";
+
 
 export default class Telebirr {
     public client: Iclient;
@@ -12,6 +15,7 @@ export default class Telebirr {
         this.requestReq = { ...requestReq, timestamp: Date.now().toString() };
         this.receiver = receiver;
     }
+
     public static fromOneValue(arg: TTelebirrConstructor): Telebirr {
         return new Telebirr({
             appid: arg.appid,
@@ -48,5 +52,33 @@ export default class Telebirr {
         }
     }
 
+    public async sendRequest(arg: TBaseSendRequest): Promise<IResponse | void> {
+
+        try {
+            const options: AxiosRequestConfig = {
+                baseURL: this.combineUrl(this.client.baseUrl, arg.endpoint),
+                data: arg.data,
+                method: arg.requestMode,
+            }
+
+            const response = await axios(options);
+            const data: IResponse = checkIfSuccess(response.data) as IResponse;
+            return data;
+
+        } catch (error: any) {
+            if (isAxiosError(error)) {
+                throw Error(error.message)
+            } else {
+                throw error
+            }
+
+        }
+    }
+
+    private combineUrl(baseUrl: string, endpoint: string) {
+        const url = new URL(baseUrl);
+        url.pathname = endpoint;
+        return url.toString();
+    }
 }
 
