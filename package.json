@@ -4,10 +4,24 @@
   "description": "typescript enforced teleBirr API package",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon test/index.ts"
+    "dev": "nodemon test/index.ts",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "npm test"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaleabteweld/telebirrts.git"
+  },
+  "keywords": [
+    "teleBirr",
+    "teleBirr API",
+    "teleBirr API package",
+    "teleBirr API package typescript"
+  ],
+  "author": "kolo",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.1",
