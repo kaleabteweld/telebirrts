@@ -1,13 +1,13 @@
 import Telebirr from ".";
-import { IH5StringA, IH5Ussid, IH5webResponse, IRequestBody, IStringA, ITransaction } from "../types";
+import { IInAppStringA, IInAppResponse, InAppUssid, IRequestBody, ITransaction } from "../types";
 import { Method } from "axios"
 import Url from "../utils/url";
 
 
-export default class H5WebPayment extends Telebirr {
-    protected endpoint: string = "/toTradeWebPay";
+export default class InAppPayment extends Telebirr {
+    protected endpoint: string = "/toTradeMobielPay";
     private requestMode: Method = "POST";
-    private returnUrl: string;
+    private returnApp: string;
 
     private telebirr: Telebirr;
 
@@ -16,9 +16,9 @@ export default class H5WebPayment extends Telebirr {
     private requestBody: IRequestBody | undefined;
 
 
-    constructor(telebirr: Telebirr, returnUrl: string) {
-        super(telebirr.client, telebirr.requestReq, telebirr.receiver, telebirr.signBehavior);
-        this.returnUrl = returnUrl
+    constructor(telebirr: Telebirr, returnApp: string) {
+        super(telebirr.client, telebirr.requestReq, telebirr.receiver);
+        this.returnApp = returnApp
         this.telebirr = telebirr;
     }
 
@@ -35,16 +35,16 @@ export default class H5WebPayment extends Telebirr {
         }
     }
 
-    public async sendRequest(): Promise<IH5webResponse | void> {
+    public async sendRequest(): Promise<IInAppResponse | void> {
 
         try {
-            const iH5webResponse: IH5webResponse = await this.telebirr.sendRequest({
+            const inAppPaymentResponse: IInAppResponse = await this.telebirr.sendRequest({
                 data: (this.requestBody as IRequestBody),
                 endpoint: this.endpoint,
                 requestMode: this.requestMode,
-            }) as IH5webResponse;
+            }) as IInAppResponse;
 
-            return iH5webResponse;
+            return inAppPaymentResponse;
         } catch (error) {
             throw error;
         }
@@ -52,7 +52,7 @@ export default class H5WebPayment extends Telebirr {
 
     private makeSigh(): string {
 
-        const stringA: IH5StringA = this.signBehavior.makeH5StringASigh(this.returnUrl,
+        const stringA: IInAppStringA = this.signBehavior.makeInAppPaymentStringASigh(this.returnApp,
             {
                 appid: this.client.appid,
                 appkey: this.client.appkey,
@@ -61,11 +61,11 @@ export default class H5WebPayment extends Telebirr {
                 transaction: (this.transaction as ITransaction)
             });
 
-        return this.signBehavior.makeSigh<IH5StringA>({ buildURL: Url.buildStringAURL }, stringA);
-    };
+        return this.signBehavior.makeSigh<IInAppStringA>({ buildURL: Url.buildStringAURL }, stringA);
+    }
 
     private makeUssid(): string {
-        const ussid: IH5Ussid = this.ussidBehavior.makeH5Ussid(this.returnUrl,
+        const ussid: InAppUssid = this.ussidBehavior.makeInAppPaymentUssid(this.returnApp,
             {
                 appid: this.client.appid,
                 appkey: this.client.appkey,
@@ -73,8 +73,9 @@ export default class H5WebPayment extends Telebirr {
                 requestReq: this.requestReq,
                 transaction: (this.transaction as ITransaction)
             });
-        return this.ussidBehavior.makeUssid<IH5Ussid>({}, ussid);
+        return this.ussidBehavior.makeUssid<InAppUssid>({}, ussid);
 
     }
+
 
 }
