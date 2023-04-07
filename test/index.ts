@@ -1,23 +1,22 @@
-import Telebirr from "../src/paymentMethods";
-import H5WebPayment from "../src/paymentMethods/H5WebPayment";
+import { Telebirr, H5WebPayment } from "../src/index";
 
 const telebirr: Telebirr = Telebirr.fromOneValue({
     appid: "123456",
     appkey: "123456",
-    baseUrl: "https://jsonplaceholder.typicode.com/users",
     publicKey: "123456",
-    notifyUrl: "https://www.baidu.com",
+    baseUrl: "https://api.telebirr.com",
+    notifyUrl: "https://www.yourApp.com/notifyUrl",
     timeoutExpress: "123456",
-    receiveName: "123456",
+    receiveName: "kolo",
     shortCode: "123456",
 });
 
-const webPayment: H5WebPayment = new H5WebPayment(telebirr, "/users");
+const webPayment: H5WebPayment = new H5WebPayment(telebirr, "/returnUrl");
 webPayment.addTransaction({
     nonce: "123456",
     outTradeNo: "123456",
-    subject: "123456",
-    totalAmount: "123456",
+    subject: "Api",
+    totalAmount: "100.0",
 })
 
 async function pay() {

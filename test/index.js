@@ -8,28 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const paymentMethods_1 = __importDefault(require("../src/paymentMethods"));
-const H5WebPayment_1 = __importDefault(require("../src/paymentMethods/H5WebPayment"));
-const telebirr = paymentMethods_1.default.fromOneValue({
+const index_1 = require("../src/index");
+const telebirr = index_1.Telebirr.fromOneValue({
     appid: "123456",
     appkey: "123456",
-    baseUrl: "https://jsonplaceholder.typicode.com/users",
     publicKey: "123456",
-    notifyUrl: "https://www.baidu.com",
+    baseUrl: "https://api.telebirr.com",
+    notifyUrl: "https://www.yourApp.com/notifyUrl",
     timeoutExpress: "123456",
-    receiveName: "123456",
+    receiveName: "kolo",
     shortCode: "123456",
 });
-const webPayment = new H5WebPayment_1.default(telebirr, "/users");
+const webPayment = new index_1.H5WebPayment(telebirr, "/returnUrl");
 webPayment.addTransaction({
     nonce: "123456",
     outTradeNo: "123456",
-    subject: "123456",
-    totalAmount: "123456",
+    subject: "Api",
+    totalAmount: "100.0",
 });
 function pay() {
     return __awaiter(this, void 0, void 0, function* () {
