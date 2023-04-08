@@ -1,6 +1,6 @@
 {
   "name": "telebirrts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "typescript enforced teleBirr API package",
   "main": "index.js",
   "scripts": {
@@ -8,8 +8,7 @@
     "build": "tsc",
     "prepare": "npm run build",
     "version": "npm run format && git add -A src",
-    "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm test"
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
