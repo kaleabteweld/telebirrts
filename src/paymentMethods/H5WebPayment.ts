@@ -61,7 +61,7 @@ export default class H5WebPayment extends Telebirr {
                 transaction: (this.transaction as ITransaction)
             });
 
-        return this.signBehavior.makeSigh<IH5StringA>({ buildURL: Url.buildStringAURL }, stringA);
+        return this.signBehavior.makeSigh<IH5StringA>({ publicKey: this.client.publicKey, baseUrl: this.client.baseUrl }, stringA);
     };
 
     private makeUssid(): string {
@@ -73,7 +73,7 @@ export default class H5WebPayment extends Telebirr {
                 requestReq: this.requestReq,
                 transaction: (this.transaction as ITransaction)
             });
-        return this.ussidBehavior.makeUssid<IH5Ussid>({}, ussid);
+        return this.ussidBehavior.makeUssid<IH5Ussid>({ publicKey: this.client.publicKey }, ussid);
 
     }
 

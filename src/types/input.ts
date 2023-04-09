@@ -47,16 +47,20 @@ export type TBaseSendRequest = {
 **/
 
 export type TMakeSighPerimeter = {
+    publicKey: string;
+    baseUrl: string
     sort?: <PaymentMethodd extends IInAppStringA | IH5StringA> (stringA: PaymentMethodd) => PaymentMethodd
-    buildURL: (sortedSignFron: IStringA) => string,
-    encrypt?: (queryString: string) => string
+    buildURL?: <PaymentMethodd extends IInAppStringA | IH5StringA>(stringA: PaymentMethodd) => string
+    encrypt?: (queryString: string, publicKey: string) => string
+    combineUrl?: (baseUrl: string, endpoint: string) => string
 }
 
 /**
 * @param encrypt Return the encrypted string of the url
 **/
 export type TMakeUssidPerimeter = {
-    encrypt?: (queryString: string) => string
+    publicKey: string;
+    encrypt?: (queryString: string, publicKey: string) => string
 }
 
 /**

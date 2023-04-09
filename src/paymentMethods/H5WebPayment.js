@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const _1 = __importDefault(require("."));
-const url_1 = __importDefault(require("../utils/url"));
 class H5WebPayment extends _1.default {
     constructor(telebirr, returnUrl) {
         super(telebirr.client, telebirr.requestReq, telebirr.receiver, telebirr.signBehavior);
@@ -55,7 +54,7 @@ class H5WebPayment extends _1.default {
             requestReq: this.requestReq,
             transaction: this.transaction
         });
-        return this.signBehavior.makeSigh({ buildURL: url_1.default.buildStringAURL }, stringA);
+        return this.signBehavior.makeSigh({ publicKey: this.client.publicKey, baseUrl: this.client.baseUrl }, stringA);
     }
     ;
     makeUssid() {
@@ -66,7 +65,7 @@ class H5WebPayment extends _1.default {
             requestReq: this.requestReq,
             transaction: this.transaction
         });
-        return this.ussidBehavior.makeUssid({}, ussid);
+        return this.ussidBehavior.makeUssid({ publicKey: this.client.publicKey }, ussid);
     }
 }
 exports.default = H5WebPayment;
