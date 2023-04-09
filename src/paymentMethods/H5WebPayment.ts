@@ -61,7 +61,7 @@ export default class H5WebPayment extends Telebirr {
                 transaction: (this.transaction as ITransaction)
             });
 
-        return this.signBehavior.makeSigh<IH5StringA>({ buildURL: Url.buildStringAURL }, stringA);
+        return this.signBehavior.makeSigh<IH5StringA>({}, stringA);
     };
 
     private makeUssid(): string {

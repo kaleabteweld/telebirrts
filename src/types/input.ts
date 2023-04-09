@@ -48,7 +48,7 @@ export type TBaseSendRequest = {
 
 export type TMakeSighPerimeter = {
     sort?: <PaymentMethodd extends IInAppStringA | IH5StringA> (stringA: PaymentMethodd) => PaymentMethodd
-    buildURL: (sortedSignFron: IStringA) => string,
+    buildURL?: <PaymentMethodd extends IInAppStringA | IH5StringA>(stringA: PaymentMethodd) => string
     encrypt?: (queryString: string) => string
 }
 

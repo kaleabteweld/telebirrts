@@ -1,10 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UssidBehavior = exports.SighBehavior = void 0;
 const index_1 = require("./index");
+const url_1 = __importDefault(require("./url"));
 class SighBehavior {
     constructor() {
         this.encryptStringA = (queryString) => (0, index_1.encrypt)(queryString);
+        this.buildStringAURL = (stringA) => url_1.default.buildStringAURL(stringA);
     }
     makeH5StringASigh(returnUrl, { appid, appkey, receiver, requestReq, transaction }) {
         return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnUrl, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
@@ -12,7 +17,7 @@ class SighBehavior {
     makeInAppPaymentStringASigh(returnApp, { appid, appkey, receiver, requestReq, transaction }) {
         return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnApp, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
     }
-    makeSigh({ sort = this.sortStringA, buildURL, encrypt = this.encryptStringA }, stringA) {
+    makeSigh({ sort = this.sortStringA, buildURL = this.buildStringAURL, encrypt = this.encryptStringA }, stringA) {
         const sortStringA = sort(stringA);
         const queryString = buildURL(sortStringA);
         const encryptedQueryString = encrypt(JSON.stringify(queryString));

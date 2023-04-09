@@ -1,6 +1,7 @@
 import { IH5StringA, IH5Ussid, IInAppStringA, InAppUssid } from "../types";
 import { encrypt } from "./index";
 import { TMakeSighPerimeter, TMakeStringAPerimeter, TMakeUssidPerimeter } from "../types/input";
+import Url from "./url";
 
 export interface ISignBehavior {
     makeH5StringASigh: (returnUrl: string, Perimeter: TMakeStringAPerimeter) => IH5StringA,
@@ -8,6 +9,7 @@ export interface ISignBehavior {
     makeSigh: <PaymentMethodd extends IInAppStringA | IH5StringA>(Perimeter: TMakeSighPerimeter, stringA: PaymentMethodd) => string,
     sortStringA: <PaymentMethodd>(stringA: PaymentMethodd) => PaymentMethodd
     encryptStringA: (queryString: string) => string
+    buildStringAURL: <PaymentMethodd extends IInAppStringA | IH5StringA>(stringA: PaymentMethodd) => string
 }
 
 export interface IUssidBehavior {
@@ -44,7 +46,7 @@ export class SighBehavior implements ISignBehavior {
         } as IInAppStringA
     }
 
-    public makeSigh<PaymentMethodd extends IInAppStringA | IH5StringA>({ sort = this.sortStringA, buildURL, encrypt = this.encryptStringA }: TMakeSighPerimeter, stringA: PaymentMethodd): string {
+    public makeSigh<PaymentMethodd extends IInAppStringA | IH5StringA>({ sort = this.sortStringA, buildURL = this.buildStringAURL, encrypt = this.encryptStringA }: TMakeSighPerimeter, stringA: PaymentMethodd): string {
         const sortStringA = sort<PaymentMethodd>(stringA);
         const queryString = buildURL(sortStringA);
         const encryptedQueryString = encrypt(JSON.stringify(queryString));
@@ -63,6 +65,8 @@ export class SighBehavior implements ISignBehavior {
     }
 
     public encryptStringA = (queryString: string): string => encrypt(queryString);
+
+    public buildStringAURL = <PaymentMethodd extends IInAppStringA | IH5StringA>(stringA: PaymentMethodd) => Url.buildStringAURL(stringA)
 
 }
 

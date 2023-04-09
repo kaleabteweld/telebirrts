@@ -61,7 +61,7 @@ export default class InAppPayment extends Telebirr {
                 transaction: (this.transaction as ITransaction)
             });
 
-        return this.signBehavior.makeSigh<IInAppStringA>({ buildURL: Url.buildStringAURL }, stringA);
+        return this.signBehavior.makeSigh<IInAppStringA>({}, stringA);
     }
 
     private makeUssid(): string {
