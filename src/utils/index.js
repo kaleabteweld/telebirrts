@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.encrypt = exports.checkIfSuccess = void 0;
+exports.decrypt = exports.areUrlParamsValid = exports.isSorted = exports.isOfTypeInAppResponse = exports.isOfTypeH5webResponse = exports.encrypt = exports.checkIfSuccess = void 0;
 const error_1 = require("../error");
 const crypto_1 = __importDefault(require("crypto"));
 function checkIfSuccess(data) {
@@ -18,14 +18,11 @@ function checkIfSuccess(data) {
     }
 }
 exports.checkIfSuccess = checkIfSuccess;
-function encrypt(string) {
-    const { publicKey, privateKey } = crypto_1.default.generateKeyPairSync('rsa', {
-        modulusLength: 4000, // key length
-    });
+function encrypt(string, publicKey) {
     try {
-        // const publicKey = crypto.createPublicKey(this.client.publicKey);
+        const _publicKey = crypto_1.default.createPublicKey(publicKey);
         const encryptedData = crypto_1.default.publicEncrypt({
-            key: publicKey,
+            key: _publicKey,
             padding: crypto_1.default.constants.RSA_PKCS1_OAEP_PADDING,
             oaepHash: "sha512",
         }, Buffer.from(string));
@@ -37,3 +34,42 @@ function encrypt(string) {
     }
 }
 exports.encrypt = encrypt;
+function isOfTypeH5webResponse(object) {
+    return "toPayUrl" in object && typeof object.data.toPayUrl === "string";
+}
+exports.isOfTypeH5webResponse = isOfTypeH5webResponse;
+function isOfTypeInAppResponse(object) {
+    return "toPayMsg" in object && typeof object.data.toPayMsg === "string";
+}
+exports.isOfTypeInAppResponse = isOfTypeInAppResponse;
+// test functions
+function isSorted(arr) {
+    return arr.every((val, i, arr) => i === 0 || val >= arr[i - 1]);
+}
+exports.isSorted = isSorted;
+function areUrlParamsValid(url) {
+    const searchParams = new URLSearchParams(url.search);
+    for (const value of searchParams.values()) {
+        if (!value || value.trim().length === 0) {
+            return false;
+        }
+    }
+    return true;
+}
+exports.areUrlParamsValid = areUrlParamsValid;
+function decrypt(string, _privateKey, toString) {
+    try {
+        const privateKey = crypto_1.default.createPrivateKey(_privateKey);
+        const decryptedData = crypto_1.default.privateDecrypt({
+            key: privateKey,
+            padding: crypto_1.default.constants.RSA_PKCS1_OAEP_PADDING,
+            oaepHash: "sha512",
+        }, Buffer.from(string, "base64"));
+        return decryptedData.toString(toString);
+    }
+    catch (error) {
+        console.log("[-] Decrypt Error", error);
+        return "";
+    }
+}
+exports.decrypt = decrypt;

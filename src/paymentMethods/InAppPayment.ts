@@ -61,7 +61,7 @@ export default class InAppPayment extends Telebirr {
                 transaction: (this.transaction as ITransaction)
             });
 
-        return this.signBehavior.makeSigh<IInAppStringA>({}, stringA);
+        return this.signBehavior.makeSigh<IInAppStringA>({ publicKey: this.client.publicKey, baseUrl: this.client.baseUrl }, stringA);
     }
 
     private makeUssid(): string {
@@ -73,7 +73,7 @@ export default class InAppPayment extends Telebirr {
                 requestReq: this.requestReq,
                 transaction: (this.transaction as ITransaction)
             });
-        return this.ussidBehavior.makeUssid<InAppUssid>({}, ussid);
+        return this.ussidBehavior.makeUssid<InAppUssid>({ publicKey: this.client.publicKey }, ussid);
 
     }
 

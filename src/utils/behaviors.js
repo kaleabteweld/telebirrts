@@ -8,8 +8,9 @@ const index_1 = require("./index");
 const url_1 = __importDefault(require("./url"));
 class SighBehavior {
     constructor() {
-        this.encryptStringA = (queryString) => (0, index_1.encrypt)(queryString);
+        this.encryptStringA = (queryString, publicKey) => (0, index_1.encrypt)(queryString, publicKey);
         this.buildStringAURL = (stringA) => url_1.default.buildStringAURL(stringA);
+        this.combineUrl = (baseUrl, endpoint) => url_1.default.combineUrl(baseUrl, endpoint);
     }
     makeH5StringASigh(returnUrl, { appid, appkey, receiver, requestReq, transaction }) {
         return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnUrl, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
@@ -17,10 +18,10 @@ class SighBehavior {
     makeInAppPaymentStringASigh(returnApp, { appid, appkey, receiver, requestReq, transaction }) {
         return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnApp, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
     }
-    makeSigh({ sort = this.sortStringA, buildURL = this.buildStringAURL, encrypt = this.encryptStringA }, stringA) {
+    makeSigh({ sort = this.sortStringA, combineUrl = this.combineUrl, buildURL = this.buildStringAURL, encrypt = this.encryptStringA, publicKey, baseUrl }, stringA) {
         const sortStringA = sort(stringA);
-        const queryString = buildURL(sortStringA);
-        const encryptedQueryString = encrypt(JSON.stringify(queryString));
+        const queryString = combineUrl(baseUrl, buildURL(sortStringA));
+        const encryptedQueryString = encrypt(JSON.stringify(queryString), publicKey);
         return encryptedQueryString;
     }
     sortStringA(stringA) {
@@ -34,16 +35,16 @@ class SighBehavior {
 exports.SighBehavior = SighBehavior;
 class UssidBehavior {
     constructor() {
-        this.encryptUssid = (ussid) => (0, index_1.encrypt)(ussid);
+        this.encryptUssid = (ussid, publicKey) => (0, index_1.encrypt)(ussid, publicKey);
     }
-    makeH5Ussid(returnUrl, { appid, appkey, receiver, requestReq, transaction }) {
-        return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnUrl, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
+    makeH5Ussid(returnUrl, { appid, receiver, requestReq, transaction }) {
+        return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnUrl, appid: appid, timestamp: new Date().getTime().toString() });
     }
     makeInAppPaymentUssid(returnApp, { appid, appkey, receiver, requestReq, transaction }) {
-        return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnApp, appid: appid, appkey: appkey, timestamp: new Date().getTime().toString() });
+        return Object.assign(Object.assign(Object.assign(Object.assign({}, transaction), receiver), requestReq), { returnApp, appid: appid, timestamp: new Date().getTime().toString() });
     }
-    makeUssid({ encrypt = this.encryptUssid }, ussid) {
-        const encryptedQueryString = encrypt(JSON.stringify(ussid));
+    makeUssid({ encrypt = this.encryptUssid, publicKey }, ussid) {
+        const encryptedQueryString = encrypt(JSON.stringify(ussid), publicKey);
         return encryptedQueryString;
     }
 }
