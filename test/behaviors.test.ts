@@ -1,4 +1,4 @@
-import { IH5StringA, IH5Ussid, IInAppStringA, InAppUssid, areUrlParamsValid, decrypt, isSorted } from "../src";
+import { IH5StringA, IH5Ussid, IInAppStringA, InAppUssid, areUrlParamsValid, decrypt, isSorted } from "../";
 import { _privateKey, _publicKey, client, receiver, requestReq, sighBehavior, transaction, ussidBehavior } from "./const";
 import Url from "../src/utils/url";
 
