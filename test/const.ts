@@ -1,4 +1,4 @@
-import { IReceiver, IRequestReq, ITransaction, Iclient, SighBehavior, UssidBehavior } from "../src";
+import { IReceiver, IRequestReq, ITransaction, Iclient, SighBehavior, UssidBehavior } from "../";
 import crypto from "crypto"
 
 

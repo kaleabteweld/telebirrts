@@ -22,12 +22,11 @@ Install telebirrts with yarn
 To use the TeleBirr API, you first need to create an instance of the Telebirr class, which encapsulates the basic configuration of the API. You can then create an instance of the H5WebPayment class, which represents a payment made using the H5WebPayment method. Finally, you can call the sendRequest method on the H5WebPayment instance to initiate the payment request.
 
 ```typescript
-import { Telebirr, H5WebPayment, IH5webResponse, checkIfSuccess, TeleBirrError, isOfTypeH5webResponse, isOfTypeInAppResponse } from "./src/index";
+import { Telebirr, H5WebPayment, InAppPayment,IH5webResponse, checkIfSuccess, TeleBirrError, isOfTypeH5webResponse, isOfTypeInAppResponse } from "telebirrts";
+
 import crypto from "crypto"
 
 import express, { Request, Response } from 'express';
-import InAppPayment from "./src/paymentMethods/InAppPayment";
-
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
     modulusLength: 4000, // key length
@@ -101,6 +100,7 @@ app.post(telebirr.requestReq.notifyUrl, (req: Request, res: Response) => {
 In this example, we first create an instance of the Telebirr class, passing in the basic configuration options for the API. We then create an instance of the H5WebPayment class, passing in the Telebirr instance and the URL of the page to redirect the user to after the payment is completed.
 
 We then add a transaction using the addTransaction method on the H5WebPayment instance. Finally, we call the sendRequest method on the H5WebPayment instance to initiate the payment request.
+
 
 
 ## Features
