@@ -1,5 +1,5 @@
 
-# telebirrts
+# telebirrts Alpha Version
 
 Typescript enforced teleBirr API package
 
@@ -22,14 +22,12 @@ Install telebirrts with yarn
 To use the TeleBirr API, you first need to create an instance of the Telebirr class, which encapsulates the basic configuration of the API. You can then create an instance of the H5WebPayment class, which represents a payment made using the H5WebPayment method. Finally, you can call the sendRequest method on the H5WebPayment instance to initiate the payment request.
 
 ```typescript
-import { Telebirr, H5WebPayment, InAppPayment,IH5webResponse, checkIfSuccess, TeleBirrError, isOfTypeH5webResponse, isOfTypeInAppResponse } from "telebirrts";
-
+import { Telebirr, H5WebPayment, InAppPayment,IH5webResponse, checkIfSuccess, TeleBirrError, isOfTypeH5webResponse, isOfTypeInAppResponse,IAndroidReturnApp,IIOSReturnApp } from "telebirrts";
 import crypto from "crypto"
-
 import express, { Request, Response } from 'express';
 
 const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
-    modulusLength: 4000, // key length
+    modulusLength: 4000, // key length telebirrr is 2048
 });
 
 const telebirr: Telebirr = Telebirr.fromOneValue({
@@ -44,7 +42,18 @@ const telebirr: Telebirr = Telebirr.fromOneValue({
 });
 
 const webPayment: H5WebPayment = new H5WebPayment(telebirr, "/returnUrl");
-const inappPayment: InAppPayment = new InAppPayment(telebirr, "/returnApp");
+
+const isoReturnApp: IIOSReturnApp = {
+    Identifier: "willOpenTelebirrPay",
+    Schemes: "com.ethio.telebirr"
+}
+
+const andoridReturnApp: IAndroidReturnApp = {
+    Activity: "cn.tydic.ethiopay",
+    PackageName: "cn.tydic.ethiopay.PayForOtherAppActivity"
+}
+
+const inappPayment: InAppPayment = new InAppPayment(telebirr, isoReturnApp); // or  new InAppPayment(telebirr, andoridReturnApp);
 
 webPayment.addTransaction({
     nonce: "123456",
@@ -115,6 +124,7 @@ We then add a transaction using the addTransaction method on the H5WebPayment in
 Learned Design Patterns, this libraries mostly inspired/made up of strategy and decorator pattern
 ## Support
 
+As you may or may not noticed it's UNtested ie. didn't have access to credentials any issues would be appreciated
 If you have any suggestions or find any issues with the API, please open an issue on the GitHub repository 😻
 
 

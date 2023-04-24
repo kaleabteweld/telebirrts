@@ -1,13 +1,12 @@
 import Telebirr from ".";
-import { IInAppStringA, IInAppResponse, InAppUssid, IRequestBody, ITransaction } from "../types";
+import { IInAppStringA, IInAppResponse, InAppUssid, IRequestBody, ITransaction, IIOSReturnApp, IAndroidReturnApp } from "../types";
 import { Method } from "axios"
-import Url from "../utils/url";
 
 
 export default class InAppPayment extends Telebirr {
     protected endpoint: string = "/toTradeMobielPay";
     private requestMode: Method = "POST";
-    private returnApp: string;
+    private returnApp: IIOSReturnApp | IAndroidReturnApp;
 
     private telebirr: Telebirr;
 
@@ -16,7 +15,7 @@ export default class InAppPayment extends Telebirr {
     private requestBody: IRequestBody | undefined;
 
 
-    constructor(telebirr: Telebirr, returnApp: string) {
+    constructor(telebirr: Telebirr, returnApp: IIOSReturnApp | IAndroidReturnApp) {
         super(telebirr.client, telebirr.requestReq, telebirr.receiver);
         this.returnApp = returnApp
         this.telebirr = telebirr;
@@ -52,7 +51,7 @@ export default class InAppPayment extends Telebirr {
 
     private makeSigh(): string {
 
-        const stringA: IInAppStringA = this.signBehavior.makeInAppPaymentStringASigh(this.returnApp,
+        const stringA: IInAppStringA = this.signBehavior.makeInAppPaymentStringASigh(JSON.stringify(this.returnApp),
             {
                 appid: this.client.appid,
                 appkey: this.client.appkey,
@@ -65,7 +64,7 @@ export default class InAppPayment extends Telebirr {
     }
 
     private makeUssid(): string {
-        const ussid: InAppUssid = this.ussidBehavior.makeInAppPaymentUssid(this.returnApp,
+        const ussid: InAppUssid = this.ussidBehavior.makeInAppPaymentUssid(JSON.stringify(this.returnApp),
             {
                 appid: this.client.appid,
                 appkey: this.client.appkey,
