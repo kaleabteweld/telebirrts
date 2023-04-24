@@ -47,7 +47,7 @@ class InAppPayment extends _1.default {
         });
     }
     makeSigh() {
-        const stringA = this.signBehavior.makeInAppPaymentStringASigh(this.returnApp, {
+        const stringA = this.signBehavior.makeInAppPaymentStringASigh(JSON.stringify(this.returnApp), {
             appid: this.client.appid,
             appkey: this.client.appkey,
             receiver: this.receiver,
@@ -57,7 +57,7 @@ class InAppPayment extends _1.default {
         return this.signBehavior.makeSigh({ publicKey: this.client.publicKey, baseUrl: this.client.baseUrl }, stringA);
     }
     makeUssid() {
-        const ussid = this.ussidBehavior.makeInAppPaymentUssid(this.returnApp, {
+        const ussid = this.ussidBehavior.makeInAppPaymentUssid(JSON.stringify(this.returnApp), {
             appid: this.client.appid,
             appkey: this.client.appkey,
             receiver: this.receiver,

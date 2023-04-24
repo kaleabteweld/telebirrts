@@ -179,6 +179,24 @@ export type Treturn = { returnApp?: string; returnUrl?: string };
  *  @param msg Indicates the response message from telebirr platform
 **/
 
+/**
+ *  @param Schemes no idea eg: willOpenTelebirrPay
+ *  @param Identifier com.ethio.telebirr
+**/
+export interface IIOSReturnApp {
+    Schemes: string
+    Identifier: string
+}
+
+/**
+ *  @param PackageName of your app eg: cn.tydic.ethiopay
+ *  @param Activity of your app eg: cn.tydic.ethiopay.PayForOtherAppActivity
+**/
+export interface IAndroidReturnApp {
+    PackageName: string
+    Activity: string
+}
+
 export interface IResponse {
     code: string;
     message: string;
